@@ -209,16 +209,16 @@ def game():
             llm_response = get_winner(player_word, session['npc_word'])
 
             # setting up variables for history
-            player_word_history = player_word
-            npc_word_history = session['npc_word']
-            llm_response_history = llm_response
+            session['player_word_history'] = player_word
+            session['npc_word_history'] = session['npc_word']
+            session['llm_response_history'] = llm_response
 
             # if npc word wins
             if llm_response == session['npc_word']:
 
                 # deal 1 damage to player
                 session['hp'] -= 1
-                player_damage_history = 1
+                session['player_damage_history'] = 1
 
                 #increase stage
                 session['stage'] += 1
@@ -232,34 +232,34 @@ def game():
 
                 # add correct amount of ink
                 if session['stage'] < 10:
-                    ink_history = f"You gained {lvl1_ink_reward} ink (base: {lvl1_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink_history'] = f"You gained {lvl1_ink_reward} ink (base: {lvl1_base_ink} + interest: {int(0.1 * session['ink'])})"
                     session['ink'] += lvl1_ink_reward
                 elif 10 <= session['stage'] < 20:
-                    ink_history = f"You gained {lvl2_ink_reward} ink (base: {lvl2_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink_history'] = f"You gained {lvl2_ink_reward} ink (base: {lvl2_base_ink} + interest: {int(0.1 * session['ink'])})"
                     session['ink'] += lvl2_ink_reward
                 elif 20 <= session['stage'] < 30:
-                    ink_history = f"You gained {lvl3_ink_reward} ink (base: {lvl3_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink_history'] = f"You gained {lvl3_ink_reward} ink (base: {lvl3_base_ink} + interest: {int(0.1 * session['ink'])})"
                     session['ink'] += lvl3_ink_reward
                 elif 30 <= session['stage'] < 40:
-                    ink_history = f"You gained {lvl4_ink_reward} ink (base: {lvl4_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink_history'] = f"You gained {lvl4_ink_reward} ink (base: {lvl4_base_ink} + interest: {int(0.1 * session['ink'])})"
                     session['ink'] += lvl4_ink_reward
                 elif 40 <= session['stage'] < 50:
-                    ink_history = f"You gained {lvl5_ink_reward} ink (base: {lvl5_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink_history'] = f"You gained {lvl5_ink_reward} ink (base: {lvl5_base_ink} + interest: {int(0.1 * session['ink'])})"
                     session['ink'] += lvl5_ink_reward
                 elif 50 <= session['stage'] < 60:
-                    ink_history = f"You gained {lvl6_ink_reward} ink (base: {lvl6_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink_history'] = f"You gained {lvl6_ink_reward} ink (base: {lvl6_base_ink} + interest: {int(0.1 * session['ink'])})"
                     session['ink'] += lvl6_ink_reward
                 elif 60 <= session['stage'] < 70:
-                    ink_history = f"You gained {lvl7_ink_reward} ink (base: {lvl7_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink_history'] = f"You gained {lvl7_ink_reward} ink (base: {lvl7_base_ink} + interest: {int(0.1 * session['ink'])})"
                     session['ink'] += lvl7_ink_reward
                 elif 70 <= session['stage'] < 80:
-                    ink_history = f"You gained {lvl8_ink_reward} ink (base: {lvl8_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink_history'] = f"You gained {lvl8_ink_reward} ink (base: {lvl8_base_ink} + interest: {int(0.1 * session['ink'])})"
                     session['ink'] += lvl8_ink_reward
                 elif 80 <= session['stage'] < 90:
-                    ink_history = f"You gained {lvl9_ink_reward} ink (base: {lvl9_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink_history'] = f"You gained {lvl9_ink_reward} ink (base: {lvl9_base_ink} + interest: {int(0.1 * session['ink'])})"
                     session['ink'] += lvl9_ink_reward
                 elif 90 <= session['stage'] < 100:
-                    ink_history = f"You gained {lvl10_ink_reward} ink (base: {lvl10_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink_history'] = f"You gained {lvl10_ink_reward} ink (base: {lvl10_base_ink} + interest: {int(0.1 * session['ink'])})"
                     session['ink'] += lvl10_ink_reward
 
                 # add 1 to stage counter
@@ -268,7 +268,7 @@ def game():
                 if session['lifesteal'] == True:
                     heal = lifesteal_check()
                     session['hp'] += heal
-                    ability_message = f"Lifesteal healed for {heal} hp."
+                    session['ability_message'] = f"Lifesteal healed for {heal} hp."
 
             else:
                 error_message = f"ERROR: Please report. LLM returned {llm_response} instead of the winning word. Please proceed with a different word."
@@ -339,7 +339,7 @@ def game():
                                        )
 
             # generate a new word for npc
-            npc_word_history = session['npc_word']
+            session['npc_word_history'] = session['npc_word']
 
             if session['stage'] < 10:
                 current_level = 1
@@ -415,19 +415,19 @@ def game():
                 chosen_reward = chosen_rewards[chosen_reward_number]
 
                 if chosen_reward['upgrade'] == 'redraw':
-                    redraw = True
+                    session['redraw'] = True
 
                 if chosen_reward['upgrade'] == 'summon_letter':
-                    summon_letter = True
+                    session['summon_letter'] = True
 
                 if chosen_reward['upgrade'] == 'skip_word':
-                    skip_word = True
+                    session['skip_word'] = True
 
                 if chosen_reward['upgrade'] == 'increase_hp':
-                    increase_hp = True
+                    session['increase_hp'] = True
 
                 if chosen_reward['upgrade'] == 'increase_hand_size':
-                    increase_hand_size = True
+                    session['increase_hand_size'] = True
 
                 if chosen_reward['upgrade'] == 'lifesteal':
                     session['lifesteal'] = True
@@ -522,7 +522,7 @@ def game():
                 session['hand'] = []
                 session['hand'] = draw_letters(session['hand_size'])
                 session['hand'] = sort_hand(session['hand'])
-                ability_message = "Spent 10 ink to redraw hand."
+                session['ability_message'] = "Spent 10 ink to redraw hand."
 
             return render_template('game.html',
                                    npc_word=session['npc_word'],
@@ -599,7 +599,7 @@ def game():
                 else:
                     session['ink'] -= 15
                     session['hand'].append(letter_requested)
-                    ability_message = f"Spent 15 ink to summon the letter {letter_requested} to hand."
+                    session['ability_message'] = f"Spent 15 ink to summon the letter {letter_requested} to hand."
 
             return render_template('game.html',
                                    npc_word=session['npc_word'],
@@ -693,7 +693,7 @@ def game():
                     session['npc_word'] = pick_npc_word(session['lvl10_words'])
                     session['lvl10_words'].remove(session['npc_word'])
 
-                ability_message = "Spent 20 ink to skip word."
+                session['ability_message'] = "Spent 20 ink to skip word."
 
             return render_template('game.html',
                                    npc_word=session['npc_word'],
@@ -746,7 +746,7 @@ def game():
             else:
                 session['ink'] -= 30
                 session['hp'] += 1
-                ability_message = "Spent 30 ink to increase hp by 1."
+                session['ability_message'] = "Spent 30 ink to increase hp by 1."
 
             return render_template('game.html',
                                    npc_word=session['npc_word'],
@@ -798,7 +798,7 @@ def game():
             else:
                 session['ink'] -= 50
                 session['hand_size'] += 1
-                ability_message = "Spent 50 ink to increase hand size by 1."
+                session['ability_message'] = "Spent 50 ink to increase hand size by 1."
 
             return render_template('game.html',
                                    npc_word=session['npc_word'],
@@ -824,24 +824,24 @@ def game():
         #lifesteal by player win code
 
 
-    # a way to check if a variable is still undefined.
-    if 'ability_message' not in locals() and 'ability_message' not in globals():
-        ability_message = ""
-
-    if 'player_word_history' not in locals() and 'player_word_history' not in globals():
-        player_word_history = ""
-
-    if 'npc_word_history' not in locals() and 'npc_word_history' not in globals():
-        npc_word_history = ""
-
-    if 'llm_response_history' not in locals() and 'llm_response_history' not in globals():
-        llm_response_history = ""
-
-    if 'player_damage_history' not in locals() and 'player_damage_history' not in globals():
-        player_damage_history = None
-
-    if 'ink_history' not in locals() and 'ink_history' not in globals():
-        ink_history = ""
+    # # a way to check if a variable is still undefined.
+    # if 'ability_message' not in locals() and 'ability_message' not in globals():
+    #     ability_message = ""
+    #
+    # if 'player_word_history' not in locals() and 'player_word_history' not in globals():
+    #     player_word_history = ""
+    #
+    # if 'npc_word_history' not in locals() and 'npc_word_history' not in globals():
+    #     npc_word_history = ""
+    #
+    # if 'llm_response_history' not in locals() and 'llm_response_history' not in globals():
+    #     llm_response_history = ""
+    #
+    # if 'player_damage_history' not in locals() and 'player_damage_history' not in globals():
+    #     player_damage_history = None
+    #
+    # if 'ink_history' not in locals() and 'ink_history' not in globals():
+    #     session['ink_history'] = ""
 
 
     return render_template('game.html',
@@ -877,7 +877,7 @@ def tips_and_tricks():
     return render_template('html_test.html')
 
 
-@app.route("/game-over", methods=["POST"])
+@app.route("/game-over", methods=["GET", "POST"])
 def game_over():
     return render_template('game_over.html')
 
