@@ -28,12 +28,6 @@ def initialize_game():
     session['lifesteal'] = False
     session['hp'] = 10
     session['hand_size'] = 10
-    session['ink_history'] = None
-    session['ability_message'] = None
-    session['player_word_history'] = None
-    session['npc_word_history'] = None
-    session['llm_response_history'] = None
-    session['player_damage_history'] = None
     session['lvl1_words'] = ['bat', 'book', 'rock', 'claws', 'scissors', 'cat', 'dog', 'wrestler', 'ice', 'melancholy',
                              'psychology', 'keeper']
     session['lvl2_words'] = ['robot', 'unicorn', 'mystery', 'bee', 'knife', 'fire', 'earth', 'light', 'thunder',
@@ -77,74 +71,76 @@ def initialize_game():
 def game():
     print(f"/game something was sent in request.form: {request.form}")
 
-    stage = session['stage']
-    word_number = session['word_number']
-    current_level = session['current_level']
-    ink = session['ink']
-    redraw = session['redraw']
-    summon_letter = session['summon_letter']
-    skip_word = session['skip_word']
-    increase_hp = session['increase_hp']
-    increase_hand_size = session['increase_hand_size']
-    lifesteal = session['lifesteal']
-    hp = session['hp']
-    hand_size = session['hand_size']
-    ink_history = session['ink_history']
-    ability_message = session['ability_message']
-    player_word_history = session['player_word_history']
-    npc_word_history = session['npc_word_history']
-    llm_response_history = session['llm_response_history']
-    player_damage_history = session['player_damage_history']
-    lvl1_words = session['lvl1_words']
-    lvl2_words = session['lvl2_words']
-    lvl3_words = session['lvl3_words']
-    lvl4_words = session['lvl4_words']
-    lvl5_words = session['lvl5_words']
-    lvl6_words = session['lvl6_words']
-    lvl7_words = session['lvl7_words']
-    lvl8_words = session['lvl8_words']
-    lvl9_words = session['lvl9_words']
-    lvl10_words = session['lvl10_words']
-    hand = session['hand']
-    npc_word = session['npc_word']
-    list_of_upgrades = session['list_of_upgrades']
+    # stage = session['stage']
+    # word_number = session['word_number']
+    # current_level = session['current_level']
+    # ink = session['ink']
+    # redraw = session['redraw']
+    # summon_letter = session['summon_letter']
+    # skip_word = session['skip_word']
+    # increase_hp = session['increase_hp']
+    # increase_hand_size = session['increase_hand_size']
+    # lifesteal = session['lifesteal']
+    # hp = session['hp']
+    # hand_size = session['hand_size']
+    # ink_history = session['ink_history']
+    # ability_message = session['ability_message']
+    # player_word_history = session['player_word_history']
+    # npc_word_history = session['npc_word_history']
+    # llm_response_history = session['llm_response_history']
+    # player_damage_history = session['player_damage_history']
+    # lvl1_words = session['lvl1_words']
+    # lvl2_words = session['lvl2_words']
+    # lvl3_words = session['lvl3_words']
+    # lvl4_words = session['lvl4_words']
+    # lvl5_words = session['lvl5_words']
+    # lvl6_words = session['lvl6_words']
+    # lvl7_words = session['lvl7_words']
+    # lvl8_words = session['lvl8_words']
+    # lvl9_words = session['lvl9_words']
+    # lvl10_words = session['lvl10_words']
+    # hand = session['hand']
+    # npc_word = session['npc_word']
+    # list_of_upgrades = session['list_of_upgrades']
 
     lvl1_base_ink = 2
-    lvl1_ink_reward = int(lvl1_base_ink + 0.1 * ink)
+    lvl1_ink_reward = int(lvl1_base_ink + 0.1 * session['ink'])
     lvl2_base_ink = 3
-    lvl2_ink_reward = int(lvl2_base_ink + 0.1 * ink)
+    lvl2_ink_reward = int(lvl2_base_ink + 0.1 * session['ink'])
     lvl3_base_ink = 4
-    lvl3_ink_reward = int(lvl3_base_ink + 0.1 * ink)
+    lvl3_ink_reward = int(lvl3_base_ink + 0.1 * session['ink'])
     lvl4_base_ink = 5
-    lvl4_ink_reward = int(lvl4_base_ink + 0.1 * ink)
+    lvl4_ink_reward = int(lvl4_base_ink + 0.1 * session['ink'])
     lvl5_base_ink = 6
-    lvl5_ink_reward = int(lvl5_base_ink + 0.1 * ink)
+    lvl5_ink_reward = int(lvl5_base_ink + 0.1 * session['ink'])
     lvl6_base_ink = 7
-    lvl6_ink_reward = int(lvl6_base_ink + 0.1 * ink)
+    lvl6_ink_reward = int(lvl6_base_ink + 0.1 * session['ink'])
     lvl7_base_ink = 8
-    lvl7_ink_reward = int(lvl7_base_ink + 0.1 * ink)
+    lvl7_ink_reward = int(lvl7_base_ink + 0.1 * session['ink'])
     lvl8_base_ink = 9
-    lvl8_ink_reward = int(lvl8_base_ink + 0.1 * ink)
+    lvl8_ink_reward = int(lvl8_base_ink + 0.1 * session['ink'])
     lvl9_base_ink = 10
-    lvl9_ink_reward = int(lvl9_base_ink + 0.1 * ink)
+    lvl9_ink_reward = int(lvl9_base_ink + 0.1 * session['ink'])
     lvl10_base_ink = 11
-    lvl10_ink_reward = int(lvl10_base_ink + 0.1 * ink)
+    lvl10_ink_reward = int(lvl10_base_ink + 0.1 * session['ink'])
 
 
     ### ------------------ MAIN GAMEPLAY LOOP - AROUND PLAY WORD BUTTON --------------------------- ###
 
 
-    if stage == 100:
+    if session['stage'] == 100:
         return redirect(url_for('you_win'))
 
 
     if request.method == "POST":
         if "player_word" in request.form:
 
-            session['player_damage_history'] = None
-            player_damage_history = session['player_damage_history']
+            session['ink_history'] = None
             session['ability_message'] = None
-            ability_message = session['ability_message']
+            session['player_word_history'] = None
+            session['npc_word_history'] = None
+            session['llm_response_history'] = None
+            session['player_damage_history'] = None
 
             # capture the details about entered word
             player_word = request.form.get('player_word').lower()
@@ -156,29 +152,29 @@ def game():
                 error_message = "ERROR: Word must not contain any special characters."
                 return render_template('game.html',
                                        error_message=error_message,
-                                       npc_word=npc_word,
-                                       hand=hand,
-                                       hp=hp,
-                                       player_word_history=player_word_history,
-                                       npc_word_history=npc_word_history,
-                                       llm_response_history=llm_response_history,
-                                       player_damage_history=player_damage_history,
-                                       current_level=current_level,
-                                       redraw=redraw,
-                                       summon_letter=summon_letter,
-                                       skip_word=skip_word,
-                                       increase_hp=increase_hp,
-                                       increase_hand_size=increase_hand_size,
-                                       lifesteal=lifesteal,
-                                       ability_message=ability_message,
-                                       ink=ink,
-                                       ink_history=ink_history,
-                                       word_number=word_number,
+                                       npc_word=session['npc_word'],
+                                       hand=session['hand'],
+                                       hp=session['hp'],
+                                       player_word_history=session['player_word_history'],
+                                       npc_word_history=session['npc_word_history'],
+                                       llm_response_history=session['llm_response_history'],
+                                       player_damage_history=session['player_damage_history'],
+                                       current_level=session['current_level'],
+                                       redraw=session['redraw'],
+                                       summon_letter=session['summon_letter'],
+                                       skip_word=session['skip_word'],
+                                       increase_hp=session['increase_hp'],
+                                       increase_hand_size=session['increase_hand_size'],
+                                       lifesteal=session['lifesteal'],
+                                       ability_message=session['ability_message'],
+                                       ink=session['ink'],
+                                       ink_history=session['ink_history'],
+                                       word_number=session['word_number'],
                                        )
 
             # checks for using letters in hand
             error = False
-            hand_copy = hand.copy()
+            hand_copy = session['hand'].copy()
             for letter in player_word_list:
                 if letter not in hand_copy:
                     error = True
@@ -189,92 +185,89 @@ def game():
                 error_message = "ERROR: Word contained letters not in 'hand'."
                 return render_template('game.html',
                                        error_message=error_message,
-                                       npc_word=npc_word,
-                                       hand=hand,
-                                       hp=hp,
-                                       player_word_history=player_word_history,
-                                       npc_word_history=npc_word_history,
-                                       llm_response_history=llm_response_history,
-                                       player_damage_history=player_damage_history,
-                                       current_level=current_level,
-                                       redraw=redraw,
-                                       summon_letter=summon_letter,
-                                       skip_word=skip_word,
-                                       increase_hp=increase_hp,
-                                       increase_hand_size=increase_hand_size,
-                                       lifesteal=lifesteal,
-                                       ability_message=ability_message,
-                                       ink=ink,
-                                       ink_history=ink_history,
-                                       word_number=word_number,
+                                       npc_word=session['npc_word'],
+                                       hand=session['hand'],
+                                       hp=session['hp'],
+                                       player_word_history=session['player_word_history'],
+                                       npc_word_history=session['npc_word_history'],
+                                       llm_response_history=session['llm_response_history'],
+                                       player_damage_history=session['player_damage_history'],
+                                       current_level=session['current_level'],
+                                       redraw=session['redraw'],
+                                       summon_letter=session['summon_letter'],
+                                       skip_word=session['skip_word'],
+                                       increase_hp=session['increase_hp'],
+                                       increase_hand_size=session['increase_hand_size'],
+                                       lifesteal=session['lifesteal'],
+                                       ability_message=session['ability_message'],
+                                       ink=session['ink'],
+                                       ink_history=session['ink_history'],
+                                       word_number=session['word_number'],
                                        )
 
             # run the llm to see who wins
-            llm_response = get_winner(player_word, npc_word)
-            print(f"TEST: This is players word: {player_word}")
-            print(f"TEST: This is npc word: {npc_word}")
-            print(f"TEST: This is llm response (winner): {llm_response}")
+            llm_response = get_winner(player_word, session['npc_word'])
 
             # setting up variables for history
             player_word_history = player_word
-            npc_word_history = npc_word
+            npc_word_history = session['npc_word']
             llm_response_history = llm_response
 
             # if npc word wins
-            if llm_response == npc_word:
+            if llm_response == session['npc_word']:
 
                 # deal 1 damage to player
-                hp -= 1
+                session['hp'] -= 1
                 player_damage_history = 1
 
                 #increase stage
-                stage += 1
+                session['stage'] += 1
 
                 # check if player is dead
-                if hp <= 0:
+                if session['hp'] <= 0:
                     return redirect(url_for("game_over"))
 
             # if player word wins
             elif llm_response == player_word:
 
                 # add correct amount of ink
-                if stage < 10:
-                    ink_history = f"You gained {lvl1_ink_reward} ink (base: {lvl1_base_ink} + interest: {int(0.1 * ink)})"
-                    ink += lvl1_ink_reward
-                elif 10 <= stage < 20:
-                    ink_history = f"You gained {lvl2_ink_reward} ink (base: {lvl2_base_ink} + interest: {int(0.1 * ink)})"
-                    ink += lvl2_ink_reward
-                elif 20 <= stage < 30:
-                    ink_history = f"You gained {lvl3_ink_reward} ink (base: {lvl3_base_ink} + interest: {int(0.1 * ink)})"
-                    ink += lvl3_ink_reward
-                elif 30 <= stage < 40:
-                    ink_history = f"You gained {lvl4_ink_reward} ink (base: {lvl4_base_ink} + interest: {int(0.1 * ink)})"
-                    ink += lvl4_ink_reward
-                elif 40 <= stage < 50:
-                    ink_history = f"You gained {lvl5_ink_reward} ink (base: {lvl5_base_ink} + interest: {int(0.1 * ink)})"
-                    ink += lvl5_ink_reward
-                elif 50 <= stage < 60:
-                    ink_history = f"You gained {lvl6_ink_reward} ink (base: {lvl6_base_ink} + interest: {int(0.1 * ink)})"
-                    ink += lvl6_ink_reward
-                elif 60 <= stage < 70:
-                    ink_history = f"You gained {lvl7_ink_reward} ink (base: {lvl7_base_ink} + interest: {int(0.1 * ink)})"
-                    ink += lvl7_ink_reward
-                elif 70 <= stage < 80:
-                    ink_history = f"You gained {lvl8_ink_reward} ink (base: {lvl8_base_ink} + interest: {int(0.1 * ink)})"
-                    ink += lvl8_ink_reward
-                elif 80 <= stage < 90:
-                    ink_history = f"You gained {lvl9_ink_reward} ink (base: {lvl9_base_ink} + interest: {int(0.1 * ink)})"
-                    ink += lvl9_ink_reward
-                elif 90 <= stage < 100:
-                    ink_history = f"You gained {lvl10_ink_reward} ink (base: {lvl10_base_ink} + interest: {int(0.1 * ink)})"
-                    ink += lvl10_ink_reward
+                if session['stage'] < 10:
+                    ink_history = f"You gained {lvl1_ink_reward} ink (base: {lvl1_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink'] += lvl1_ink_reward
+                elif 10 <= session['stage'] < 20:
+                    ink_history = f"You gained {lvl2_ink_reward} ink (base: {lvl2_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink'] += lvl2_ink_reward
+                elif 20 <= session['stage'] < 30:
+                    ink_history = f"You gained {lvl3_ink_reward} ink (base: {lvl3_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink'] += lvl3_ink_reward
+                elif 30 <= session['stage'] < 40:
+                    ink_history = f"You gained {lvl4_ink_reward} ink (base: {lvl4_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink'] += lvl4_ink_reward
+                elif 40 <= session['stage'] < 50:
+                    ink_history = f"You gained {lvl5_ink_reward} ink (base: {lvl5_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink'] += lvl5_ink_reward
+                elif 50 <= session['stage'] < 60:
+                    ink_history = f"You gained {lvl6_ink_reward} ink (base: {lvl6_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink'] += lvl6_ink_reward
+                elif 60 <= session['stage'] < 70:
+                    ink_history = f"You gained {lvl7_ink_reward} ink (base: {lvl7_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink'] += lvl7_ink_reward
+                elif 70 <= session['stage'] < 80:
+                    ink_history = f"You gained {lvl8_ink_reward} ink (base: {lvl8_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink'] += lvl8_ink_reward
+                elif 80 <= session['stage'] < 90:
+                    ink_history = f"You gained {lvl9_ink_reward} ink (base: {lvl9_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink'] += lvl9_ink_reward
+                elif 90 <= session['stage'] < 100:
+                    ink_history = f"You gained {lvl10_ink_reward} ink (base: {lvl10_base_ink} + interest: {int(0.1 * session['ink'])})"
+                    session['ink'] += lvl10_ink_reward
 
                 # add 1 to stage counter
-                stage += 1
+                session['stage'] += 1
 
-                if lifesteal == True:
+                if session['lifesteal'] == True:
                     heal = lifesteal_check()
-                    hp += heal
+                    session['hp'] += heal
                     ability_message = f"Lifesteal healed for {heal} hp."
 
             else:
@@ -282,41 +275,41 @@ def game():
                 print(f"ERROR: llm_response not player_word or npc_word. llm_response: {llm_response}")
                 return render_template('game.html',
                                        error_message=error_message,
-                                       npc_word=npc_word,
-                                       hand=hand,
-                                       hp=hp,
-                                       player_word_history=player_word_history,
-                                       npc_word_history=npc_word_history,
-                                       llm_response_history=llm_response_history,
-                                       player_damage_history=player_damage_history,
-                                       current_level=current_level,
-                                       redraw=redraw,
-                                       summon_letter=summon_letter,
-                                       skip_word=skip_word,
-                                       increase_hp=increase_hp,
-                                       increase_hand_size=increase_hand_size,
-                                       lifesteal=lifesteal,
-                                       ability_message=ability_message,
-                                       ink=ink,
-                                       ink_history=ink_history,
-                                       word_number=word_number,
+                                       npc_word=session['npc_word'],
+                                       hand=session['hand'],
+                                       hp=session['hp'],
+                                       player_word_history=session['player_word_history'],
+                                       npc_word_history=session['npc_word_history'],
+                                       llm_response_history=session['llm_response_history'],
+                                       player_damage_history=session['player_damage_history'],
+                                       current_level=session['current_level'],
+                                       redraw=session['redraw'],
+                                       summon_letter=session['summon_letter'],
+                                       skip_word=session['skip_word'],
+                                       increase_hp=session['increase_hp'],
+                                       increase_hand_size=session['increase_hand_size'],
+                                       lifesteal=session['lifesteal'],
+                                       ability_message=session['ability_message'],
+                                       ink=session['ink'],
+                                       ink_history=session['ink_history'],
+                                       word_number=session['word_number'],
                                        )
 
             # if it passes checks
             # remove the letters from hand
             for letter in player_word_list:
-                hand.remove(letter)
+                session['hand'].remove(letter)
 
-            word_number += 1
-            print(f"TEST TEST: After word played, passed all checks, word_number: {word_number}")
+            session['word_number'] += 1
+            print(f"TEST TEST: After word played, passed all checks, word_number: {session['word_number']}")
             print(f"TEST TEST: After word played, passed all checks, session['word_number']: {session['word_number']}")
 
 
             # if stage is over 9 or something, go to rewards screen
-            if stage == 10 or stage == 20 or stage == 30 or stage == 40 or stage == 50 or stage == 60 or stage == 70 or stage == 80 or stage == 90:
+            if session['stage'] == 10 or session['stage'] == 20 or session['stage'] == 30 or session['stage'] == 40 or session['stage'] == 50 or session['stage'] == 60 or session['stage'] == 70 or session['stage'] == 80 or session['stage'] == 90:
 
                 # if no upgrades left available, just render it with only the 50 ink option
-                if len(list_of_upgrades) <= 0:
+                if len(session['list_of_upgrades']) <= 0:
                     return render_template('rewards.html')
 
                 # will get us 3 upgrades unless there aren't that many left to grab
@@ -346,63 +339,63 @@ def game():
                                        )
 
             # generate a new word for npc
-            npc_word_history = npc_word
+            npc_word_history = session['npc_word']
 
-            if stage < 10:
+            if session['stage'] < 10:
                 current_level = 1
-                npc_word = pick_npc_word(lvl1_words)
-                lvl1_words.remove(npc_word)
-            elif 10 <= stage < 20:
+                session['npc_word'] = pick_npc_word(session['lvl1_words'])
+                session['lvl1_words'].remove(session['npc_word'])
+            elif 10 <= session['stage'] < 20:
                 current_level = 2
-                npc_word = pick_npc_word(lvl2_words)
-                lvl2_words.remove(npc_word)
-            elif 20 <= stage < 30:
+                session['npc_word'] = pick_npc_word(session['lvl2_words'])
+                session['lvl2_words'].remove(session['npc_word'])
+            elif 20 <= session['stage'] < 30:
                 current_level = 3
-                npc_word = pick_npc_word(lvl3_words)
-                lvl3_words.remove(npc_word)
-            elif 30 <= stage < 40:
+                session['npc_word'] = pick_npc_word(session['lvl3_words'])
+                session['lvl3_words'].remove(session['npc_word'])
+            elif 30 <= session['stage'] < 40:
                 current_level = 4
-                npc_word = pick_npc_word(lvl4_words)
-                lvl4_words.remove(npc_word)
-            elif 40 <= stage < 50:
+                session['npc_word'] = pick_npc_word(session['lvl4_words'])
+                session['lvl4_words'].remove(session['npc_word'])
+            elif 40 <= session['stage'] < 50:
                 current_level = 5
-                npc_word = pick_npc_word(lvl5_words)
-                lvl5_words.remove(npc_word)
-            elif 50 <= stage < 60:
+                session['npc_word'] = pick_npc_word(session['lvl5_words'])
+                session['lvl5_words'].remove(session['npc_word'])
+            elif 50 <= session['stage'] < 60:
                 current_level = 6
-                npc_word = pick_npc_word(lvl6_words)
-                lvl6_words.remove(npc_word)
-            elif 60 <= stage < 70:
+                session['npc_word'] = pick_npc_word(session['lvl6_words'])
+                session['lvl6_words'].remove(session['npc_word'])
+            elif 60 <= session['stage'] < 70:
                 current_level = 7
-                npc_word = pick_npc_word(lvl7_words)
-                lvl7_words.remove(npc_word)
-            elif 70 <= stage < 80:
+                session['npc_word'] = pick_npc_word(session['lvl7_words'])
+                session['lvl7_words'].remove(session['npc_word'])
+            elif 70 <= session['stage'] < 80:
                 current_level = 8
-                npc_word = pick_npc_word(lvl8_words)
-                lvl8_words.remove(npc_word)
-            elif 80 <= stage < 90:
+                session['npc_word'] = pick_npc_word(session['lvl8_words'])
+                session['lvl8_words'].remove(session['npc_word'])
+            elif 80 <= session['stage'] < 90:
                 current_level = 9
-                npc_word = pick_npc_word(lvl9_words)
-                lvl9_words.remove(npc_word)
-            elif 90 <= stage < 100:
+                session['npc_word'] = pick_npc_word(session['lvl9_words'])
+                session['lvl9_words'].remove(session['npc_word'])
+            elif 90 <= session['stage'] < 100:
                 current_level = 10
-                npc_word = pick_npc_word(lvl10_words)
-                lvl10_words.remove(npc_word)
+                session['npc_word'] = pick_npc_word(session['lvl10_words'])
+                session['lvl10_words'].remove(session['npc_word'])
 
 
 
             # replace letters for player hand
-            len_hand = len(hand)
+            len_hand = len(session['hand'])
             print(f"This is len_hand after player word: {len_hand}")
-            draw_amount = hand_size - len_hand
+            draw_amount = session['hand_size'] - len_hand
             letter_drawn_list = draw_letters(draw_amount)
             for letter in letter_drawn_list:
-                hand.append(letter)
-            hand = sort_hand(hand)
+                session['hand'].append(letter)
+            session['hand'] = sort_hand(session['hand'])
 
             print(f"This is len_hand after drawing: {len_hand}")
 
-            print(f"TEST: This is hand right before rendering template at end: {hand}")
+            print(f"TEST: This is hand right before rendering template at end: {session['hand']}")
 
 
     ### ----------------------- REWARDS SECTION - INITIALIZE THE LEVEL(STAGE) AND ADDING REWARD BUFFS -------------- ###
@@ -416,7 +409,7 @@ def game():
             chosen_reward_form = request.form.get('reward')
 
             if chosen_reward_form == "3":  # if reward chosen was gain 50 ink
-                ink += 50
+                session['ink'] += 50
             else:
                 chosen_reward_number = int(chosen_reward_form)
                 chosen_reward = chosen_rewards[chosen_reward_number]
@@ -437,63 +430,63 @@ def game():
                     increase_hand_size = True
 
                 if chosen_reward['upgrade'] == 'lifesteal':
-                    lifesteal = True
+                    session['lifesteal'] = True
 
                 # remove the chosen reward so it doesn't show up again
-                list_of_upgrades.remove(chosen_reward)
+                session['list_of_upgrades'].remove(chosen_reward)
 
             # initialize the next stage
 
             # redraw hand
-            hand = []
-            hand = draw_letters(hand_size)
-            hand = sort_hand(hand)
+            session['hand'] = []
+            session['hand'] = draw_letters(session['hand_size'])
+            session['hand'] = sort_hand(session['hand'])
 
-            if stage == 10:
+            if session['stage'] == 10:
                 current_level = 2
-                word_number = 1
-                npc_word = pick_npc_word(lvl2_words)
-                lvl2_words.remove(npc_word)
-            elif stage == 20:
+                session['word_number'] = 1
+                session['npc_word'] = pick_npc_word(session['lvl2_words'])
+                session['lvl2_words'].remove(session['npc_word'])
+            elif session['stage'] == 20:
                 current_level = 3
-                word_number = 1
-                npc_word = pick_npc_word(lvl3_words)
-                lvl3_words.remove(npc_word)
-            elif stage == 30:
+                session['word_number'] = 1
+                session['npc_word'] = pick_npc_word(session['lvl3_words'])
+                session['lvl3_words'].remove(session['npc_word'])
+            elif session['stage'] == 30:
                 current_level = 4
-                word_number = 1
-                npc_word = pick_npc_word(lvl4_words)
-                lvl4_words.remove(npc_word)
-            elif stage == 40:
+                session['word_number'] = 1
+                session['npc_word'] = pick_npc_word(session['lvl4_words'])
+                session['lvl4_words'].remove(session['npc_word'])
+            elif session['stage'] == 40:
                 current_level = 5
-                word_number = 1
-                npc_word = pick_npc_word(lvl5_words)
-                lvl5_words.remove(npc_word)
-            elif stage == 50:
+                session['word_number'] = 1
+                session['npc_word'] = pick_npc_word(session['lvl5_words'])
+                session['lvl5_words'].remove(session['npc_word'])
+            elif session['stage'] == 50:
                 current_level = 6
-                word_number = 1
-                npc_word = pick_npc_word(lvl6_words)
-                lvl6_words.remove(npc_word)
-            elif stage == 60:
+                session['word_number'] = 1
+                session['npc_word'] = pick_npc_word(session['lvl6_words'])
+                session['lvl6_words'].remove(session['npc_word'])
+            elif session['stage'] == 60:
                 current_level = 7
-                word_number = 1
-                npc_word = pick_npc_word(lvl7_words)
-                lvl7_words.remove(npc_word)
-            elif stage == 70:
+                session['word_number'] = 1
+                session['npc_word'] = pick_npc_word(session['lvl7_words'])
+                session['lvl7_words'].remove(session['npc_word'])
+            elif session['stage'] == 70:
                 current_level = 8
-                word_number = 1
-                npc_word = pick_npc_word(lvl8_words)
-                lvl8_words.remove(npc_word)
-            elif stage == 80:
+                session['word_number'] = 1
+                session['npc_word'] = pick_npc_word(session['lvl8_words'])
+                session['lvl8_words'].remove(session['npc_word'])
+            elif session['stage'] == 80:
                 current_level = 9
-                word_number = 1
-                npc_word = pick_npc_word(lvl9_words)
-                lvl9_words.remove(npc_word)
-            elif stage == 90:
+                session['word_number'] = 1
+                session['npc_word'] = pick_npc_word(session['lvl9_words'])
+                session['lvl9_words'].remove(session['npc_word'])
+            elif session['stage'] == 90:
                 current_level = 10
-                word_number = 1
-                npc_word = pick_npc_word(lvl10_words)
-                lvl10_words.remove(npc_word)
+                session['word_number'] = 1
+                session['npc_word'] = pick_npc_word(session['lvl10_words'])
+                session['lvl10_words'].remove(session['npc_word'])
 
 
     ### ----------------------- BUTTON ABILITIES SECTION - CODE FOR MAKING BUTTON ABILITIES WORK -------------- ###
@@ -501,82 +494,82 @@ def game():
     if request.method == "POST":
         if "redraw" in request.form:
 
-            if ink < 10:
+            if session['ink'] < 10:
                 error_message = "Error: Not enough ink to cast redraw."
                 return render_template('game.html',
                                        error_message=error_message,
-                                       npc_word=npc_word,
-                                       hand=hand,
-                                       hp=hp,
-                                       player_word_history=player_word_history,
-                                       npc_word_history=npc_word_history,
-                                       llm_response_history=llm_response_history,
-                                       player_damage_history=player_damage_history,
-                                       current_level=current_level,
-                                       redraw=redraw,
-                                       summon_letter=summon_letter,
-                                       skip_word=skip_word,
-                                       increase_hp=increase_hp,
-                                       increase_hand_size=increase_hand_size,
-                                       lifesteal=lifesteal,
-                                       ability_message=ability_message,
-                                       ink=ink,
-                                       ink_history=ink_history,
-                                       word_number=word_number,
+                                       npc_word=session['npc_word'],
+                                       hand=session['hand'],
+                                       hp=session['hp'],
+                                       player_word_history=session['player_word_history'],
+                                       npc_word_history=session['npc_word_history'],
+                                       llm_response_history=session['llm_response_history'],
+                                       player_damage_history=session['player_damage_history'],
+                                       current_level=session['current_level'],
+                                       redraw=session['redraw'],
+                                       summon_letter=session['summon_letter'],
+                                       skip_word=session['skip_word'],
+                                       increase_hp=session['increase_hp'],
+                                       increase_hand_size=session['increase_hand_size'],
+                                       lifesteal=session['lifesteal'],
+                                       ability_message=session['ability_message'],
+                                       ink=session['ink'],
+                                       ink_history=session['ink_history'],
+                                       word_number=session['word_number'],
                                        )
             else:
-                ink -= 10
-                hand = []
-                hand = draw_letters(hand_size)
-                hand = sort_hand(hand)
+                session['ink'] -= 10
+                session['hand'] = []
+                session['hand'] = draw_letters(session['hand_size'])
+                session['hand'] = sort_hand(session['hand'])
                 ability_message = "Spent 10 ink to redraw hand."
 
             return render_template('game.html',
-                                   npc_word=npc_word,
-                                   hand=hand,
-                                   hp=hp,
-                                   player_word_history=player_word_history,
-                                   npc_word_history=npc_word_history,
-                                   llm_response_history=llm_response_history,
-                                   player_damage_history=player_damage_history,
-                                   current_level=current_level,
-                                   redraw=redraw,
-                                   summon_letter=summon_letter,
-                                   skip_word=skip_word,
-                                   increase_hp=increase_hp,
-                                   increase_hand_size=increase_hand_size,
-                                   lifesteal=lifesteal,
-                                   ability_message=ability_message,
-                                   ink=ink,
-                                   ink_history=ink_history,
-                                   word_number=word_number,
+                                   npc_word=session['npc_word'],
+                                   hand=session['hand'],
+                                   hp=session['hp'],
+                                   player_word_history=session['player_word_history'],
+                                   npc_word_history=session['npc_word_history'],
+                                   llm_response_history=session['llm_response_history'],
+                                   player_damage_history=session['player_damage_history'],
+                                   current_level=session['current_level'],
+                                   redraw=session['redraw'],
+                                   summon_letter=session['summon_letter'],
+                                   skip_word=session['skip_word'],
+                                   increase_hp=session['increase_hp'],
+                                   increase_hand_size=session['increase_hand_size'],
+                                   lifesteal=session['lifesteal'],
+                                   ability_message=session['ability_message'],
+                                   ink=session['ink'],
+                                   ink_history=session['ink_history'],
+                                   word_number=session['word_number'],
                                    )
 
     if request.method == "POST":
         if "summon_letter" in request.form:
 
-            if ink < 15:
+            if session['ink'] < 15:
                 error_message = "Error: Not enough ink to cast summon letter."
                 return render_template('game.html',
                                        error_message=error_message,
-                                       npc_word=npc_word,
-                                       hand=hand,
-                                       hp=hp,
-                                       player_word_history=player_word_history,
-                                       npc_word_history=npc_word_history,
-                                       llm_response_history=llm_response_history,
-                                       player_damage_history=player_damage_history,
-                                       current_level=current_level,
-                                       redraw=redraw,
-                                       summon_letter=summon_letter,
-                                       skip_word=skip_word,
-                                       increase_hp=increase_hp,
-                                       increase_hand_size=increase_hand_size,
-                                       lifesteal=lifesteal,
-                                       ability_message=ability_message,
-                                       ink=ink,
-                                       ink_history=ink_history,
-                                       word_number=word_number,
+                                       npc_word=session['npc_word'],
+                                       hand=session['hand'],
+                                       hp=session['hp'],
+                                       player_word_history=session['player_word_history'],
+                                       npc_word_history=session['npc_word_history'],
+                                       llm_response_history=session['llm_response_history'],
+                                       player_damage_history=session['player_damage_history'],
+                                       current_level=session['current_level'],
+                                       redraw=session['redraw'],
+                                       summon_letter=session['summon_letter'],
+                                       skip_word=session['skip_word'],
+                                       increase_hp=session['increase_hp'],
+                                       increase_hand_size=session['increase_hand_size'],
+                                       lifesteal=session['lifesteal'],
+                                       ability_message=session['ability_message'],
+                                       ink=session['ink'],
+                                       ink_history=session['ink_history'],
+                                       word_number=session['word_number'],
                                        )
             else:
                 letter_requested = request.form.get('letter_to_summon').lower()
@@ -584,248 +577,248 @@ def game():
                     error_message = "Error: Must select letter of English alphabet."
                     return render_template('game.html',
                                            error_message=error_message,
-                                           npc_word=npc_word,
-                                           hand=hand,
-                                           hp=hp,
-                                           player_word_history=player_word_history,
-                                           npc_word_history=npc_word_history,
-                                           llm_response_history=llm_response_history,
-                                           player_damage_history=player_damage_history,
-                                           current_level=current_level,
-                                           redraw=redraw,
-                                           summon_letter=summon_letter,
-                                           skip_word=skip_word,
-                                           increase_hp=increase_hp,
-                                           increase_hand_size=increase_hand_size,
-                                           lifesteal=lifesteal,
-                                           ability_message=ability_message,
-                                           ink=ink,
-                                           ink_history=ink_history,
-                                           word_number=word_number,
+                                           npc_word=session['npc_word'],
+                                           hand=session['hand'],
+                                           hp=session['hp'],
+                                           player_word_history=session['player_word_history'],
+                                           npc_word_history=session['npc_word_history'],
+                                           llm_response_history=session['llm_response_history'],
+                                           player_damage_history=session['player_damage_history'],
+                                           current_level=session['current_level'],
+                                           redraw=session['redraw'],
+                                           summon_letter=session['summon_letter'],
+                                           skip_word=session['skip_word'],
+                                           increase_hp=session['increase_hp'],
+                                           increase_hand_size=session['increase_hand_size'],
+                                           lifesteal=session['lifesteal'],
+                                           ability_message=session['ability_message'],
+                                           ink=session['ink'],
+                                           ink_history=session['ink_history'],
+                                           word_number=session['word_number'],
                                            )
                 else:
-                    ink -= 15
-                    hand.append(letter_requested)
+                    session['ink'] -= 15
+                    session['hand'].append(letter_requested)
                     ability_message = f"Spent 15 ink to summon the letter {letter_requested} to hand."
 
             return render_template('game.html',
-                                   npc_word=npc_word,
-                                   hand=hand,
-                                   hp=hp,
-                                   player_word_history=player_word_history,
-                                   npc_word_history=npc_word_history,
-                                   llm_response_history=llm_response_history,
-                                   player_damage_history=player_damage_history,
-                                   current_level=current_level,
-                                   redraw=redraw,
-                                   summon_letter=summon_letter,
-                                   skip_word=skip_word,
-                                   increase_hp=increase_hp,
-                                   increase_hand_size=increase_hand_size,
-                                   lifesteal=lifesteal,
-                                   ability_message=ability_message,
-                                   ink=ink,
-                                   ink_history=ink_history,
-                                   word_number=word_number,
+                                   npc_word=session['npc_word'],
+                                   hand=session['hand'],
+                                   hp=session['hp'],
+                                   player_word_history=session['player_word_history'],
+                                   npc_word_history=session['npc_word_history'],
+                                   llm_response_history=session['llm_response_history'],
+                                   player_damage_history=session['player_damage_history'],
+                                   current_level=session['current_level'],
+                                   redraw=session['redraw'],
+                                   summon_letter=session['summon_letter'],
+                                   skip_word=session['skip_word'],
+                                   increase_hp=session['increase_hp'],
+                                   increase_hand_size=session['increase_hand_size'],
+                                   lifesteal=session['lifesteal'],
+                                   ability_message=session['ability_message'],
+                                   ink=session['ink'],
+                                   ink_history=session['ink_history'],
+                                   word_number=session['word_number'],
                                    )
 
     if request.method == "POST":
         if "skip_word" in request.form:
 
-            if ink < 20:
+            if session['ink'] < 20:
                 error_message = "Error: Not enough ink to cast skip word."
                 return render_template('game.html',
                                        error_message=error_message,
-                                       npc_word=npc_word,
-                                       hand=hand,
-                                       hp=hp,
-                                       player_word_history=player_word_history,
-                                       npc_word_history=npc_word_history,
-                                       llm_response_history=llm_response_history,
-                                       player_damage_history=player_damage_history,
-                                       current_level=current_level,
-                                       redraw=redraw,
-                                       summon_letter=summon_letter,
-                                       skip_word=skip_word,
-                                       increase_hp=increase_hp,
-                                       increase_hand_size=increase_hand_size,
-                                       lifesteal=lifesteal,
-                                       ability_message=ability_message,
-                                       ink=ink,
-                                       ink_history=ink_history,
-                                       word_number=word_number,
+                                       npc_word=session['npc_word'],
+                                       hand=session['hand'],
+                                       hp=session['hp'],
+                                       player_word_history=session['player_word_history'],
+                                       npc_word_history=session['npc_word_history'],
+                                       llm_response_history=session['llm_response_history'],
+                                       player_damage_history=session['player_damage_history'],
+                                       current_level=session['current_level'],
+                                       redraw=session['redraw'],
+                                       summon_letter=session['summon_letter'],
+                                       skip_word=session['skip_word'],
+                                       increase_hp=session['increase_hp'],
+                                       increase_hand_size=session['increase_hand_size'],
+                                       lifesteal=session['lifesteal'],
+                                       ability_message=session['ability_message'],
+                                       ink=session['ink'],
+                                       ink_history=session['ink_history'],
+                                       word_number=session['word_number'],
                                        )
             else:
-                ink -= 20
+                session['ink'] -= 20
 
-                stage += 1
-                if stage < 10:
+                session['stage'] += 1
+                if session['stage'] < 10:
                     current_level = 1
-                    npc_word = pick_npc_word(lvl1_words)
-                    lvl1_words.remove(npc_word)
-                elif 10 <= stage < 20:
+                    session['npc_word'] = pick_npc_word(session['lvl1_words'])
+                    session['lvl1_words'].remove(session['npc_word'])
+                elif 10 <= session['stage'] < 20:
                     current_level = 2
-                    npc_word = pick_npc_word(lvl2_words)
-                    lvl2_words.remove(npc_word)
-                elif 20 <= stage < 30:
+                    session['npc_word'] = pick_npc_word(session['lvl2_words'])
+                    session['lvl2_words'].remove(session['npc_word'])
+                elif 20 <= session['stage'] < 30:
                     current_level = 3
-                    npc_word = pick_npc_word(lvl3_words)
-                    lvl3_words.remove(npc_word)
-                elif 30 <= stage < 40:
+                    session['npc_word'] = pick_npc_word(session['lvl3_words'])
+                    session['lvl3_words'].remove(session['npc_word'])
+                elif 30 <= session['stage'] < 40:
                     current_level = 4
-                    npc_word = pick_npc_word(lvl4_words)
-                    lvl4_words.remove(npc_word)
-                elif 40 <= stage < 50:
+                    session['npc_word'] = pick_npc_word(session['lvl4_words'])
+                    session['lvl4_words'].remove(session['npc_word'])
+                elif 40 <= session['stage'] < 50:
                     current_level = 5
-                    npc_word = pick_npc_word(lvl5_words)
-                    lvl5_words.remove(npc_word)
-                elif 50 <= stage < 60:
+                    session['npc_word'] = pick_npc_word(session['lvl5_words'])
+                    session['lvl5_words'].remove(session['npc_word'])
+                elif 50 <= session['stage'] < 60:
                     current_level = 6
-                    npc_word = pick_npc_word(lvl6_words)
-                    lvl6_words.remove(npc_word)
-                elif 60 <= stage < 70:
+                    session['npc_word'] = pick_npc_word(session['lvl6_words'])
+                    session['lvl6_words'].remove(session['npc_word'])
+                elif 60 <= session['stage'] < 70:
                     current_level = 7
-                    npc_word = pick_npc_word(lvl7_words)
-                    lvl7_words.remove(npc_word)
-                elif 70 <= stage < 80:
+                    session['npc_word'] = pick_npc_word(session['lvl7_words'])
+                    session['lvl7_words'].remove(session['npc_word'])
+                elif 70 <= session['stage'] < 80:
                     current_level = 8
-                    npc_word = pick_npc_word(lvl8_words)
-                    lvl8_words.remove(npc_word)
-                elif 80 <= stage < 90:
+                    session['npc_word'] = pick_npc_word(session['lvl8_words'])
+                    session['lvl8_words'].remove(session['npc_word'])
+                elif 80 <= session['stage'] < 90:
                     current_level = 9
-                    npc_word = pick_npc_word(lvl9_words)
-                    lvl9_words.remove(npc_word)
-                elif 90 <= stage < 100:
+                    session['npc_word'] = pick_npc_word(session['lvl9_words'])
+                    session['lvl9_words'].remove(session['npc_word'])
+                elif 90 <= session['stage'] < 100:
                     current_level = 10
-                    npc_word = pick_npc_word(lvl10_words)
-                    lvl10_words.remove(npc_word)
+                    session['npc_word'] = pick_npc_word(session['lvl10_words'])
+                    session['lvl10_words'].remove(session['npc_word'])
 
                 ability_message = "Spent 20 ink to skip word."
 
             return render_template('game.html',
-                                   npc_word=npc_word,
-                                   hand=hand,
-                                   hp=hp,
-                                   player_word_history=player_word_history,
-                                   npc_word_history=npc_word_history,
-                                   llm_response_history=llm_response_history,
-                                   player_damage_history=player_damage_history,
-                                   current_level=current_level,
-                                   redraw=redraw,
-                                   summon_letter=summon_letter,
-                                   skip_word=skip_word,
-                                   increase_hp=increase_hp,
-                                   increase_hand_size=increase_hand_size,
-                                   lifesteal=lifesteal,
-                                   ability_message=ability_message,
-                                   ink=ink,
-                                   ink_history=ink_history,
-                                   word_number=word_number,
+                                   npc_word=session['npc_word'],
+                                   hand=session['hand'],
+                                   hp=session['hp'],
+                                   player_word_history=session['player_word_history'],
+                                   npc_word_history=session['npc_word_history'],
+                                   llm_response_history=session['llm_response_history'],
+                                   player_damage_history=session['player_damage_history'],
+                                   current_level=session['current_level'],
+                                   redraw=session['redraw'],
+                                   summon_letter=session['summon_letter'],
+                                   skip_word=session['skip_word'],
+                                   increase_hp=session['increase_hp'],
+                                   increase_hand_size=session['increase_hand_size'],
+                                   lifesteal=session['lifesteal'],
+                                   ability_message=session['ability_message'],
+                                   ink=session['ink'],
+                                   ink_history=session['ink_history'],
+                                   word_number=session['word_number'],
                                    )
 
 
     if request.method == "POST":
         if "increase_hp" in request.form:
 
-            if ink < 30:
+            if session['ink'] < 30:
                 error_message = "Error: Not enough ink to cast increase hp."
                 return render_template('game.html',
                                        error_message=error_message,
-                                       npc_word=npc_word,
-                                       hand=hand,
-                                       hp=hp,
-                                       player_word_history=player_word_history,
-                                       npc_word_history=npc_word_history,
-                                       llm_response_history=llm_response_history,
-                                       player_damage_history=player_damage_history,
-                                       current_level=current_level,
-                                       redraw=redraw,
-                                       summon_letter=summon_letter,
-                                       skip_word=skip_word,
-                                       increase_hp=increase_hp,
-                                       increase_hand_size=increase_hand_size,
-                                       lifesteal=lifesteal,
-                                       ability_message=ability_message,
-                                       ink=ink,
-                                       ink_history=ink_history,
-                                       word_number=word_number,
+                                       npc_word=session['npc_word'],
+                                       hand=session['hand'],
+                                       hp=session['hp'],
+                                       player_word_history=session['player_word_history'],
+                                       npc_word_history=session['npc_word_history'],
+                                       llm_response_history=session['llm_response_history'],
+                                       player_damage_history=session['player_damage_history'],
+                                       current_level=session['current_level'],
+                                       redraw=session['redraw'],
+                                       summon_letter=session['summon_letter'],
+                                       skip_word=session['skip_word'],
+                                       increase_hp=session['increase_hp'],
+                                       increase_hand_size=session['increase_hand_size'],
+                                       lifesteal=session['lifesteal'],
+                                       ability_message=session['ability_message'],
+                                       ink=session['ink'],
+                                       ink_history=session['ink_history'],
+                                       word_number=session['word_number'],
                                        )
             else:
-                ink -= 30
-                hp += 1
+                session['ink'] -= 30
+                session['hp'] += 1
                 ability_message = "Spent 30 ink to increase hp by 1."
 
             return render_template('game.html',
-                                   npc_word=npc_word,
-                                   hand=hand,
-                                   hp=hp,
-                                   player_word_history=player_word_history,
-                                   npc_word_history=npc_word_history,
-                                   llm_response_history=llm_response_history,
-                                   player_damage_history=player_damage_history,
-                                   current_level=current_level,
-                                   redraw=redraw,
-                                   summon_letter=summon_letter,
-                                   skip_word=skip_word,
-                                   increase_hp=increase_hp,
-                                   increase_hand_size=increase_hand_size,
-                                   lifesteal=lifesteal,
-                                   ability_message=ability_message,
-                                   ink=ink,
-                                   ink_history=ink_history,
-                                   word_number=word_number,
+                                   npc_word=session['npc_word'],
+                                   hand=session['hand'],
+                                   hp=session['hp'],
+                                   player_word_history=session['player_word_history'],
+                                   npc_word_history=session['npc_word_history'],
+                                   llm_response_history=session['llm_response_history'],
+                                   player_damage_history=session['player_damage_history'],
+                                   current_level=session['current_level'],
+                                   redraw=session['redraw'],
+                                   summon_letter=session['summon_letter'],
+                                   skip_word=session['skip_word'],
+                                   increase_hp=session['increase_hp'],
+                                   increase_hand_size=session['increase_hand_size'],
+                                   lifesteal=session['lifesteal'],
+                                   ability_message=session['ability_message'],
+                                   ink=session['ink'],
+                                   ink_history=session['ink_history'],
+                                   word_number=session['word_number'],
                                    )
 
     if request.method == "POST":
         if "increase_hand_size" in request.form:
 
-            if ink < 50:
+            if session['ink'] < 50:
                 error_message = "Error: Not enough ink to cast increase hand size."
                 return render_template('game.html',
                                        error_message=error_message,
-                                       npc_word=npc_word,
-                                       hand=hand,
-                                       hp=hp,
-                                       player_word_history=player_word_history,
-                                       npc_word_history=npc_word_history,
-                                       llm_response_history=llm_response_history,
-                                       player_damage_history=player_damage_history,
-                                       current_level=current_level,
-                                       redraw=redraw,
-                                       summon_letter=summon_letter,
-                                       skip_word=skip_word,
-                                       increase_hp=increase_hp,
-                                       increase_hand_size=increase_hand_size,
-                                       lifesteal=lifesteal,
-                                       ability_message=ability_message,
-                                       ink=ink,
-                                       ink_history=ink_history,
-                                       word_number=word_number,
+                                       npc_word=session['npc_word'],
+                                       hand=session['hand'],
+                                       hp=session['hp'],
+                                       player_word_history=session['player_word_history'],
+                                       npc_word_history=session['npc_word_history'],
+                                       llm_response_history=session['llm_response_history'],
+                                       player_damage_history=session['player_damage_history'],
+                                       current_level=session['current_level'],
+                                       redraw=session['redraw'],
+                                       summon_letter=session['summon_letter'],
+                                       skip_word=session['skip_word'],
+                                       increase_hp=session['increase_hp'],
+                                       increase_hand_size=session['increase_hand_size'],
+                                       lifesteal=session['lifesteal'],
+                                       ability_message=session['ability_message'],
+                                       ink=session['ink'],
+                                       ink_history=session['ink_history'],
+                                       word_number=session['word_number'],
                                        )
             else:
-                ink -= 50
-                hand_size += 1
+                session['ink'] -= 50
+                session['hand_size'] += 1
                 ability_message = "Spent 50 ink to increase hand size by 1."
 
             return render_template('game.html',
-                                   npc_word=npc_word,
-                                   hand=hand,
-                                   hp=hp,
-                                   player_word_history=player_word_history,
-                                   npc_word_history=npc_word_history,
-                                   llm_response_history=llm_response_history,
-                                   player_damage_history=player_damage_history,
-                                   current_level=current_level,
-                                   redraw=redraw,
-                                   summon_letter=summon_letter,
-                                   skip_word=skip_word,
-                                   increase_hp=increase_hp,
-                                   increase_hand_size=increase_hand_size,
-                                   lifesteal=lifesteal,
-                                   ability_message=ability_message,
-                                   ink=ink,
-                                   ink_history=ink_history,
-                                   word_number=word_number,
+                                   npc_word=session['npc_word'],
+                                   hand=session['hand'],
+                                   hp=session['hp'],
+                                   player_word_history=session['player_word_history'],
+                                   npc_word_history=session['npc_word_history'],
+                                   llm_response_history=session['llm_response_history'],
+                                   player_damage_history=session['player_damage_history'],
+                                   current_level=session['current_level'],
+                                   redraw=session['redraw'],
+                                   summon_letter=session['summon_letter'],
+                                   skip_word=session['skip_word'],
+                                   increase_hp=session['increase_hp'],
+                                   increase_hand_size=session['increase_hand_size'],
+                                   lifesteal=session['lifesteal'],
+                                   ability_message=session['ability_message'],
+                                   ink=session['ink'],
+                                   ink_history=session['ink_history'],
+                                   word_number=session['word_number'],
                                    )
 
         #lifesteal by player win code
@@ -852,24 +845,24 @@ def game():
 
 
     return render_template('game.html',
-                           npc_word=npc_word,
-                           hand=hand,
-                           hp=hp,
-                           player_word_history=player_word_history,
-                           npc_word_history=npc_word_history,
-                           llm_response_history=llm_response_history,
-                           player_damage_history=player_damage_history,
-                           current_level=current_level,
-                           redraw=redraw,
-                           summon_letter=summon_letter,
-                           skip_word=skip_word,
-                           increase_hp=increase_hp,
-                           increase_hand_size=increase_hand_size,
-                           lifesteal=lifesteal,
-                           ability_message=ability_message,
-                           ink=ink,
-                           ink_history=ink_history,
-                           word_number=word_number,
+                           npc_word=session['npc_word'],
+                           hand=session['hand'],
+                           hp=session['hp'],
+                           player_word_history=session['player_word_history'],
+                           npc_word_history=session['npc_word_history'],
+                           llm_response_history=session['llm_response_history'],
+                           player_damage_history=session['player_damage_history'],
+                           current_level=session['current_level'],
+                           redraw=session['redraw'],
+                           summon_letter=session['summon_letter'],
+                           skip_word=session['skip_word'],
+                           increase_hp=session['increase_hp'],
+                           increase_hand_size=session['increase_hand_size'],
+                           lifesteal=session['lifesteal'],
+                           ability_message=session['ability_message'],
+                           ink=session['ink'],
+                           ink_history=session['ink_history'],
+                           word_number=session['word_number'],
                            )
 
 
