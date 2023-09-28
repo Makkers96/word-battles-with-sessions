@@ -2,9 +2,11 @@ from flask import Flask, render_template, redirect, url_for, request, session
 from main import draw_letters, hand_size, pick_npc_word, special_characters, sort_hand, generate_upgrades, \
     alphabet, lifesteal_check, number_of_upgrades
 from llm import get_winner
+import os
 
 app = Flask(__name__)
 
+app.secret_key = os.getenv('secret_key')
 
 @app.route("/")
 def homepage():
