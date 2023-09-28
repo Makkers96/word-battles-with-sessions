@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+    <h1>Level {{ current_level }}</h1>
+    <h2>Word #{{ word_number }}</h2>
+
+    {% if error_message %}
+    <div id="error-message">{{ error_message }}</div>
+    {% endif %}
+
+    <h2>{{ npc_word }}</h2>
+    <form action="/game" method="post">
+        <input type="text" name="player_word" required>
+        <input type="submit" value="Submit" >
+    </form>
+    <p>Letters: {{ hand }}</p>
+    <p>HP: {{ hp }}</p>
+
+    <h3>Last Turn Summary:</h3>
+    {% if llm_response_history %}
+        <h4>{{ player_word_history }} VS {{ npc_word_history }}. {{ llm_response_history }} was the winner.</h4>
+    {% endif %}
+    {% if player_damage_history %}
+        <h4>You took {{ player_damage_history }} damage.</h4>
+    {% endif %}
+    {% if ability_message %}
+        <h4>{{ ability_message }}</h4>
+    {% endif %}
+    {% if ink_history %}
+        <h4>{{ ink_history }}</h4>
+    {% endif %}
+
+
+    <h3>Ink: {{ ink }}</h3>
+
+    <h3>Spells:</h3>
+
+    {% if redraw %}
+    <form action="/game" method="POST">
+        <button name="redraw" type="submit">Redraw (10 Ink)</button>
+    </form>
+    {% endif %}
+
+    {% if summon_letter %}
+    <form action="/game" method="POST">
+        <input type="text" name="letter_to_summon" maxlength="1">
+        <button name="summon_letter" type="submit">Summon Letter (15 Ink)</button>
+    </form>
+    {% endif %}
+
+    {% if skip_word %}
+    <form action="/game" method="POST">
+        <button name="skip_word" type="submit">Skip Word (20 Ink)</button>
+    </form>
+    {% endif %}
+
+    {% if increase_hp %}
+    <form action="/game" method="POST">
+        <button name="increase_hp" type="submit">HP +1 (30 Ink)</button>
+    </form>
+    {% endif %}
+
+    {% if increase_hand_size %}
+    <form action="/game" method="POST">
+        <button name="increase_hand_size" type="submit">Hand Size +1 (50 Ink)</button>
+    </form>
+    {% endif %}
+
+    {% if lifesteal %}
+        <h4>Lifesteal: Active (10%)</h4>
+    {% endif %}
+
+</body>
+</html>

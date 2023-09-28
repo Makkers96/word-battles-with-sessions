@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Word Battler</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      flex-direction: column;
+    }
+
+    h1, button {
+      text-align: center;
+    }
+
+    #instructions {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Word Battler</h1>
+
+  <form action="/initialize-game" method="POST">
+    <button type="submit">Start Game</button>
+  </form>
+
+  <form action="/tips-and-tricks" method="POST">
+    <button type="submit">Tips and Tricks</button>
+  </form>
+
+  <form action="/html-test" method="POST">
+    <button type="submit">Go to HTML Test</button>
+  </form>
+
+  <div id="instructions">
+    <h2>How to Play</h2>
+      <p>Use the letters available to come up with a word that would beat the word shown in a fight. Interpret that how you will ;).</p>
+      <p>If you lose to the word, you lose 1 hp. Reach 0 HP, and it's game over.</p>
+      <p>If you beat the word, you gain ink. (flat amount based on lvl with +10% interest of total ink)</p>
+      <p>Beat levels to unlock spells. (Spells cost ink.)</p>
+      <p>Get as high level as you can!</p>
+      <p>Good Luck, and Have fun!</p>
+  </div>
+</body>
+</html>
