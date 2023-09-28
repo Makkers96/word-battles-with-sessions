@@ -308,6 +308,8 @@ def game():
                 hand.remove(letter)
 
             word_number += 1
+            print(f"TEST TEST: After word played, passed all checks, word_number: {word_number}")
+            print(f"TEST TEST: After word played, passed all checks, session['word_number']: {session['word_number']}")
 
 
             # if stage is over 9 or something, go to rewards screen
